@@ -133,7 +133,7 @@
 #' so that the posterior sample size is \code{n1}.
 #' For each element in the posterior sample of serial interval distribution, 
 #' we then draw a sample of size \code{n2} in the posterior distribution of the reproduction number over each time window, 
-#' conditionnally on this serial interval distribution. 
+#' conditionally on this serial interval distribution. 
 #' After pooling, a sample of size \eqn{\code{n1}\times\code{n2}} of the joint posterior distribution of 
 #' the reproduction number over each time window is obtained.
 #' The posterior mean, standard deviation, and 0.025, 0.05, 0.25, 0.5, 0.75, 0.95, 0.975 quantiles of the reproduction number for each time window are obtained from this sample.

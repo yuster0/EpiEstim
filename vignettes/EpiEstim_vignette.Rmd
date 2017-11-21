@@ -1,0 +1,72 @@
+---
+title: "EpiEstim: Estimating disease transmissibility from disease incidence time series and serial interval data"
+author: "R.N. Thompson, J.E. Stockwin"
+date: "18/11/2017"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+One of the key features of the EpiEstim package is the ability to estimate the time-dependent reproduction number (R) from two types of data:
+
+1.	Disease incidence time series
+2.	Interval-censored observations of the serial interval
+
+Here we demonstrate the installation of EpiEstim and use on a sample dataset.  For details of how to use EpiEstim with other types of data (e.g. incidence time series consisting of both local and imported cases, a pre-formed distribution of the serial interval, etc), see the main documentation inside the package.  
+
+First, download the package in R software.
+
+    library(devtools)
+    install_github("nickreich/coarseDataTools", ref = "hackout3", force = TRUE)
+    library(coarseDataTools)
+    library(MCMCpack)
+    install_github('annecori/EpiEstim', ref = "hackout3", force = TRUE)
+    library(EpiEstim)
+
+## Loading the data and estimating the reproduction number
+
+The example that follows will use disease incidence time series (DataS1.csv) and interval-censored observations of the serial interval (DataS2.csv), which are datasets available with our publication [1]. Save these on your computer. In R, navigate to the folder containing these files, and load the files.
+
+    setwd('INSERT FILE PATH HERE')
+    disease_incidence_data <- read.csv("DataS1.csv", header = FALSE)
+    serial_interval_data <- read.csv("DataS1.csv", header = FALSE)
+    
+Set the column names of the serial interval data and convert the serial interval data into a data frame (IS THIS NEEDED?)
+
+    names <- c("EL", "ER", "SL", "SR")
+    colnames(serial_interval_data) <- names
+    serial_interval_data <- as.data.frame(serial_interval_data)
+
+Now call the EpiEstim function that estimates R using the data.
+
+    R_estimate <- EstimateR(disease_incidence_data, method="SIFromData", T.Start=2:9, T.End=7:14, n1 = 500, n2 = 100, seed = 1, MCMC.control=list(init.pars=NULL, burnin=3000, thin=10, seed=1), SI.Data = serial_interval_data, SI.parametricDistr = "off1G", plot=TRUE)
+    
+The terms and parameters we have included here are as follows:
+
+    method="SIFromData":  This tells EpiEstim that the serial interval data that we are inputting consists of interval-censored data describing timings of symptom appearance in known infector-recipient pairs
+    T.Start=2:9: This is vector taking values 2,3,...,9, which are the start times of the intervals in which R is estimated
+    T.End=7:14: The equivalent vector but with end times of the intervals in which R is estimated
+    serial_interval_data <- as.data.frame(serial_interval_data)
+    n1 = 500: XXX
+    n2 = 100: XXX
+
+The output is then the resulting estimates of the reproduction number throughout the outbreak, which should look like this:
+
+DATA FIG
+
+## Reference
+
+[1] Thompson RN et al. Improved inference of time-varying reproduction numbers during infectious disease outbreaks. Submitted.
+
+
