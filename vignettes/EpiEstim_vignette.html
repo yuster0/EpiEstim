@@ -37,13 +37,13 @@
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>One of the key features of the EpiEstim package is the ability to estimate the time-dependent reproduction number (R_t) from two types of data:</p>
+<p>One of the key features of the EpiEstim package is the ability to estimate the time-dependent reproduction number (R) from two types of data:</p>
 <ol style="list-style-type: decimal">
 <li>Disease incidence time series</li>
 <li>Interval-censored observations of the serial interval</li>
 </ol>
 <p>Here we demonstrate the installation of EpiEstim and use on a sample dataset. For details of how to use EpiEstim with other types of data (e.g. incidence time series consisting of both local and imported cases, a pre-formed distribution of the serial interval, etc), see the main documentation inside the package.</p>
-<p>First, download the package in R.</p>
+<p>First, download the package in R software.</p>
 <pre><code>library(devtools)
 install_github(&quot;nickreich/coarseDataTools&quot;, ref = &quot;hackout3&quot;, force = TRUE)
 library(coarseDataTools)
@@ -61,14 +61,22 @@ serial_interval_data &lt;- read.csv(&quot;DataS1.csv&quot;, header = FALSE)</cod
 <pre><code>names &lt;- c(&quot;EL&quot;, &quot;ER&quot;, &quot;SL&quot;, &quot;SR&quot;)
 colnames(serial_interval_data) &lt;- names
 serial_interval_data &lt;- as.data.frame(serial_interval_data)</code></pre>
-<p>Now call the EpiEstim function that estimates the reproduction number using the data.</p>
+<p>Now call the EpiEstim function that estimates R using the data.</p>
 <pre><code>R_estimate &lt;- EstimateR(disease_incidence_data, method=&quot;SIFromData&quot;, T.Start=2:9, T.End=7:14, n1 = 500, n2 = 100, seed = 1, MCMC.control=list(init.pars=NULL, burnin=3000, thin=10, seed=1), SI.Data = serial_interval_data, SI.parametricDistr = &quot;off1G&quot;, plot=TRUE)</code></pre>
 <p>The terms and parameters we have included here are as follows:</p>
 <pre><code>method=&quot;SIFromData&quot;:  This tells EpiEstim that the serial interval data that we are inputting consists of interval-censored data describing timings of symptom appearance in known infector-recipient pairs
-T.Start=2:9: This is vector taking values 2,3,...,9, which are the start times of the intervals in which the reproduction number is estimated
+
+T.Start=2:9: This is vector taking values 2,3,...,9, which are the start times of the intervals in which R is estimated
 T.End=7:14: The equivalent vector but with end times of the intervals in which R is estimated
-serial_interval_data &lt;- as.data.frame(serial_interval_data)</code></pre>
-<p>The resulting estimation of the reproduction number throughout the outbreak should look like this:</p>
+serial_interval_data &lt;- as.data.frame(serial_interval_data)
+n1 = 500: XXX
+n2 = 100: XXX
+seed = 1
+MCMC.control=list(init.pars=NULL, burnin=3000, thin=10, seed=1)
+SI.Data = serial_interval_data
+SI.parametricDistr = &quot;off1G&quot;
+plot=TRUE:This tells EpiEstim that we want a plot of our results</code></pre>
+<p>The output is then the resulting estimates of the reproduction number throughout the outbreak, which should look like this:</p>
 <p>DATA FIG</p>
 </div>
 <div id="reference" class="section level2">

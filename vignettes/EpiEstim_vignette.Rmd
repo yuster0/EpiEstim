@@ -60,6 +60,11 @@ The terms and parameters we have included here are as follows:
     serial_interval_data <- as.data.frame(serial_interval_data)
     n1 = 500: XXX
     n2 = 100: XXX
+    seed = 1: This sets a seed for the estimation of R, so that the results produced here are exactly reproducible.
+    MCMC.control=list(init.pars=NULL, burnin=3000, thin=10, seed=1): This sets the parameters relating to the MCMC estimation of the serial interval - namely the initial step of the MCMC chain, the number of steps to discard as burn-in while the chain converges, how frequently results should be recorded (i.e. 1 out of every 'thin' steps in the MCMC chain are recorded and contribute to the results) and a seed so that the MCMC results are reproducible exactly.
+    SI.Data = serial_interval_data: The patient data from which the serial interval distributions are estimated
+    SI.parametricDistr = "off1G": The parametric distribution that is fitted to the patient data 
+    plot=TRUE:This tells EpiEstim that we want a plot of our results
 
 The output is then the resulting estimates of the reproduction number throughout the outbreak, which should look like this:
 
